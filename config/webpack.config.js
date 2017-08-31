@@ -113,8 +113,15 @@ webpackConfig.module.loaders = [{
 },
 {
   test: /\.json$/,
-  loader: 'json',
+  loader: 'json-loader',
 }];
+
+webpackConfig.node = {
+  console: true,
+  fs: 'empty',
+  net: 'empty',
+  tls: 'empty'
+};
 
 // ------------------------------------
 // Style Loaders

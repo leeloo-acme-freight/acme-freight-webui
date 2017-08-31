@@ -6,6 +6,10 @@ import _debug from 'debug';
 import { argv } from 'yargs';
 import ip from 'ip';
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
+
 const localip = ip.address();
 const debug = _debug('app:config');
 const localEnv = (() => {

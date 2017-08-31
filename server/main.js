@@ -10,6 +10,7 @@ import webpackConfig from '../config/webpack.config';
 import config from '../config';
 import webpackDevMiddleware from './middleware/webpack-dev';
 import webpackHMRMiddleware from './middleware/webpack-hmr';
+import ConversationV1 from 'watson-developer-cloud/conversation/v1'
 
 const debug = _debug('app:server');
 const paths = config.utils_paths;
@@ -66,11 +67,47 @@ else {
   app.use(serve(paths.dist()));
 }
 
-
 var server = require('http').Server(app.callback()),
     io = require('socket.io')(server, { origins: '*:*'});
 
 io.origins('*:*');
+
+// Watson Services
+
+// If needed to run locally, create a `.env` file with these credentials
+const conversation = new ConversationV1({
+  username: process.env.WAT_CONV_USERNAME,
+  password: process.env.WAT_CONV_PASSWORD,
+  path: { workspace_id: process.env.WAT_CONV_WORKSPACE },
+  version_date: '2016-07-11'
+});
+
+var context = null;
+const askWatson = (question, socket) => {
+  // Start conversation with empty message.
+  console.log("Question: " + question);
+  conversation.message({
+    input: {
+      text: question
+    },
+    context: context
+  }, processResponse);
+
+  // Process the conversation response.
+  function processResponse(err, response) {
+    if (err) {
+      console.error(err); // something went wrong
+      return;
+    }
+
+    // Display the output from dialog, if any.
+    if (response.output.text.length != 0) {
+      console.log("Answer: " + response.output.text[0]);
+      context = response.context;
+      socket.emit('resWatson', response.output.text[0])
+    }
+  }
+}
 
 // Socket.io
 io.on('connection', function(socket){
@@ -78,6 +115,9 @@ io.on('connection', function(socket){
   socket.on('time', function (data) {
     socket.emit('time', { message: 'world' });
     console.log(data);
+  });
+  socket.on('reqWatson', (data) => {
+    askWatson(data, socket);
   });
 });
 
