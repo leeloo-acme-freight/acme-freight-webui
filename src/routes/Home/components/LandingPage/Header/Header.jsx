@@ -1,6 +1,7 @@
 import React from 'react';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
 import GhostButton from 'components/GhostButton';
+import WatsonInputModal from 'components/WatsonModal';
 import { connect } from 'react-redux';
 import { createDemo } from 'modules/demos';
 import Background from '../assets/img/background.png';
@@ -48,6 +49,8 @@ export class Header extends React.PureComponent {
           id="viewInActionButton"
           onTouchTap={this.createDemo}
         />
+        <br /><br />
+        <WatsonInputModal />
       </div>
     );
   }
