@@ -5,16 +5,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import GhostButton from '../GhostButton';
 import Socket from 'socket.io-client'
-import ip from 'ip';
 
 // Socket.io socket to communicate with backend
-const localip = ip.address();
-const port = process.env.PORT || 3000
-const addr = `http://${localip}:${port}`
-console.log(addr)
-console.log(process.env.NODE_ENV || "no env")
-console.log(__TRACKING_ID__ || "no id")
-const socket = Socket(addr);
+const socketAddr = process.env.WAT_CONV_SOCKET_ADDR || "http://localhost:8080"
+const socket = Socket(socketAddr);
+
 
 export default class WatsonModal extends Component {
   constructor(props) {
