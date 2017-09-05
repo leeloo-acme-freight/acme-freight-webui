@@ -20,6 +20,7 @@
     "__GOOGLE_MAPS_KEY__" : false,
     "__CONTROLLER_API__" : false,
     "__TRACKING_ID__" : false,
+    "__SOCKET_ID__" : false,
   },
   "rules": {
     "global-require": [0],

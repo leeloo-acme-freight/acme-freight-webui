@@ -7,9 +7,8 @@ import GhostButton from '../GhostButton';
 import Socket from 'socket.io-client'
 
 // Socket.io socket to communicate with backend
-const socketAddr = process.env.WAT_CONV_SOCKET_ADDR || "http://localhost:8080"
+const socketAddr = __SOCKET_ID__ || "http://localhost:8080"
 const socket = Socket(socketAddr);
-
 
 export default class WatsonModal extends Component {
   constructor(props) {
