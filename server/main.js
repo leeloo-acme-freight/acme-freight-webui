@@ -110,9 +110,9 @@ const askWatson = (question, socket) => {
 }
 
 // Socket.io
-io.on('connection', function(socket){
+io.on('connection', (socket) => {
   socket.emit('news', { hello: 'world' });
-  socket.on('time', function (data) {
+  socket.on('time', (data) => {
     socket.emit('time', { message: 'world' });
     console.log(data);
   });
